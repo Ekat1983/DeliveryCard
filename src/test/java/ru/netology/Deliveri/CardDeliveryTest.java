@@ -33,16 +33,13 @@ class CardDeliveryTest {
         Configuration.holdBrowserOpen = true;
 
         open("http://localhost:9999");
-        $x("[data-test-id='city']").setValue("Пермь").click();
-       // $x("//input[@placeholder='Город']").setValue("Пермь").pressEscape();
-        $x("//input[@placeholder='Дата встречи']").doubleClick().setValue(planningDate).sendKeys(Keys.DELETE);
+        $x("//input[@placeholder='Город']").setValue("Пермь").pressEscape();
+        $x("//input[@placeholder='Дата встречи']").doubleClick().pressEscape().sendKeys(planningDate);
         $x("//input[@name='name']").setValue("Иванова-Петрова Мария");
         $x("//input[@name='phone']").setValue("+79904567890");
-        $x("[data-test-id='agreement']").click();
+        $x("//label[@data-test-id='agreement']").click();
         $x("//*[text()='Забронировать']").click();
-        $x("//*div[@class='notification__content')]").shouldBe(visible, Duration.ofSeconds(15));
-        $x("//*[contains(text)),'Встреча успешно забронирована на')]").shouldBe(visible,Duration.ofSeconds(15));
-
+        $x("//div[@class='notification__content']").shouldBe(visible, Duration.ofSeconds(15));
+        $x("//div[contains(text(),'Встреча успешно забронирована на')]").shouldBe(visible,Duration.ofSeconds(15));
     }
-
 }
