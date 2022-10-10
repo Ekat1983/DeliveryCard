@@ -1,5 +1,6 @@
-package ru.netology.Deliveri;
+package ru.netology.selen;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.BeforeAll;
@@ -12,23 +13,21 @@ import java.time.format.DateTimeFormatter;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.$x;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
 
 class CardDeliveryTest {
 
 
-    @BeforeAll
+   /* @BeforeAll
     static void SetUpAll() {
-        WebDriverManager.chromedriver().setup();
-    }
+        WebDriverManager.chromedriver().setup();*/
 
     public String generateDate(int days) {
         return LocalDate.now().plusDays(days).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
     @Test
-    void all() {
+    void shouldGetNotification() {
         String planningDate = generateDate(6);
         Configuration.holdBrowserOpen = true;
 
@@ -40,6 +39,14 @@ class CardDeliveryTest {
         $x("//label[@data-test-id='agreement']").click();
         $x("//*[text()='Забронировать']").click();
         $x("//div[@class='notification__content']").shouldBe(visible, Duration.ofSeconds(15));
-        $x("//div[contains(text(),'Встреча успешно забронирована на')]").shouldBe(visible,Duration.ofSeconds(15));
+        //$x("//div[contains(text(),'Встреча успешно забронирована на')]").shouldBe(visible,Duration.ofSeconds(15));
+        $(".notification__content")
+                .shouldHave(Condition.text("Встреча успешно забронирована на " + planningDate), Duration.ofSeconds(15))
+                .shouldBe(Condition.visible);
+
     }
 }
+
+
+
+
